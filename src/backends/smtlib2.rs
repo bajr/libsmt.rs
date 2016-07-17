@@ -22,7 +22,7 @@ use theories::{bitvec, core, integer};
 /// implement this trait for the struct. This trait describes method needed to spawn, and
 /// communicate (read / write) with the solver.
 ///
-/// `read` and `write` methods are implemented by deafult and needs to be changed only if the
+/// `read` and `write` methods are implemented by default and need to be changed only if the
 /// mode of communication is different (other than process pipes), or if some custom functionality
 /// is required for the specific solver.
 pub trait SMTProc {
@@ -45,13 +45,10 @@ pub trait SMTProc {
     fn read(&mut self) -> String {
         // XXX: This read may block indefinitely if there is nothing on the pipe to be
         // read. To prevent this we need a timeout mechanism after which we should
-        // return with
-        // an error, such as: ErrTimeout.
+        // return with an error, such as: ErrTimeout.
         // Another important point to note here is that, if the data available to read
-        // is exactly
-        // 2048 bytes, then this reading mechanism fails and will end up waiting to
-        // read more data
-        // (when none is available) indefinitely.
+        // is exactly 2048 bytes, then this reading mechanism fails and will end up waiting to
+        // read more data (when none is available) indefinitely.
         let mut bytes_read = [0; 2048];
         let mut s = String::new();
         let solver = self.pipe();
@@ -211,8 +208,7 @@ impl<L: Logic> SMTBackend for SMTLib2<L> {
         smt_proc.write("(get-model)\n".to_owned());
         // XXX: For some reason we need two reads here in order to get the result from
         // the SMT solver. Need to look into the reason for this. This might stop
-        // working in the
-        // future.
+        // working in the future.
         let _ = smt_proc.read();
         let read_result = smt_proc.read();
 
